@@ -1,0 +1,21 @@
+codereview:
+  enabled: true
+  github:
+    token: test-token
+    clone-directory: ${java.io.tmpdir}/code-review-test
+  openai:
+    api-key: test-key
+    model: gpt-4o-mini
+    enabled: false
+  analysis:
+    sonarqube-rules:
+      enabled: true
+    vulnerability-scan:
+      enabled: true
+    ai-review:
+      enabled: false
+
+logging:
+  level:
+    root: WARN
+    com.codereview: DEBUG
