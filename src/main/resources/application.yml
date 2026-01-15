@@ -1,0 +1,84 @@
+server:
+  port: 8080
+
+spring:
+  application:
+    name: code-review-tool
+  jackson:
+    serialization:
+      write-dates-as-timestamps: false
+      indent-output: true
+    default-property-inclusion: non_null
+
+# Code Review Configuration
+codereview:
+  # Master switch to enable/disable code review functionality
+  enabled: true
+
+  # GitHub Configuration
+  github:
+    token: ${GITHUB_TOKEN:}
+    api-url: https://api.github.com
+    clone-directory: ${java.io.tmpdir}/code-review-repos
+
+  # OpenAI Configuration (using least costly model - gpt-4o-mini)
+  openai:
+    api-key: ${OPENAI_API_KEY:}
+    model: gpt-4o-mini
+    max-tokens: 4096
+    temperature: 0.3
+    enabled: true
+
+  # Analysis Configuration
+  analysis:
+    # Enable/disable specific analyzers
+    sonarqube-rules:
+      enabled: true
+    vulnerability-scan:
+      enabled: true
+    ai-review:
+      enabled: true
+
+    # File extensions to analyze
+    supported-extensions:
+      - .java
+      - .xml
+      - .properties
+      - .yml
+      - .yaml
+
+    # Files/directories to exclude from analysis
+    exclusions:
+      - target/
+      - build/
+      - .git/
+      - .idea/
+      - node_modules/
+      - "*.class"
+      - "*.jar"
+
+# Actuator Configuration
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics
+  endpoint:
+    health:
+      show-details: when_authorized
+
+# Logging Configuration
+logging:
+  level:
+    root: INFO
+    com.codereview: DEBUG
+  pattern:
+    console: "%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n"
+
+# SpringDoc OpenAPI Configuration
+springdoc:
+  api-docs:
+    path: /api-docs
+  swagger-ui:
+    path: /swagger-ui.html
+    enabled: true
